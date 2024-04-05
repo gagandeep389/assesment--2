@@ -1,7 +1,5 @@
-// SPDX-License-Identifier: UNLICENSED
+ // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.9;
-
-//import "hardhat/console.sol";
 
 contract Assessment {
     address payable public owner;
@@ -9,6 +7,8 @@ contract Assessment {
 
     event Deposit(uint256 amount);
     event Withdraw(uint256 amount);
+
+    enum CreditCardType { Unknown, Silver, Diamond, Platinum }
 
     constructor(uint initBalance) payable {
         owner = payable(msg.sender);
@@ -56,5 +56,25 @@ contract Assessment {
 
         // emit the event
         emit Withdraw(_withdrawAmount);
+    }
+
+    function checkCreditCardType(uint256 creditScore) public pure returns (CreditCardType) {
+        if (creditScore >= 800) {
+            return CreditCardType.Platinum;
+        } else if (creditScore >= 700) {
+            return CreditCardType.Diamond;
+        } else if (creditScore >= 600) {
+            return CreditCardType.Silver;
+        } else {
+            return CreditCardType.Unknown;
+        }
+    }
+
+    function checkCreditCardEligibility(uint256 age, bool employed) public pure returns (bool) {
+        if (age >= 21 && employed) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
